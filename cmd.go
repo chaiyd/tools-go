@@ -1,7 +1,7 @@
 package main
 
 import (
-	alioss "alioss/src"
+	alioss "github.com/chaiyd/alioss/src"
 )
 
 func main() {

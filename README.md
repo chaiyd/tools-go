@@ -7,7 +7,7 @@
 package main
 
 import (
-    alioss "alioss/src/ali-oss"
+    alioss "github.com/chaiyd/alioss/src"
 )
 
 func main() {

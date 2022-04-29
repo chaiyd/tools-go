@@ -1,4 +1,4 @@
-module alioss
+module github.com/chaiyd/alioss
 
 go 1.17
 

@@ -1,7 +1,7 @@
 package alioss
 
 import (
-	"alioss/src/api"
+	"github.com/chaiyd/alioss/src/api"
 	"fmt"
 	"io/ioutil"
 	"os"

@@ -44,20 +44,23 @@ func AliSendLog() {
 	for {
 		// line, err := reader.ReadString('\n')
 		line, _, err := reader.ReadLine()
-		// fmt.Printf("这一行的内容是：%s\n", line)
+		// fmt.Printf("这一行是：", fmt.Sprintf("%s%v\n", line)
+
 		if err == io.EOF {
+			// fmt.Printf("数据读取完毕")
+			// break
 			time.Sleep(time.Second * 1)
 			continue
 		}
 		if err != nil && err != io.EOF {
 			fmt.Println("读取错误", err)
-			break
+			os.Exit(-1)
 		}
-
-		log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"content": "test", "content2": fmt.Sprintf("%s\n", line)})
+		// log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"content": fmt.Sprintf("%s\n", line)})
+		log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"content": fmt.Sprintf("%s\n", line)})
 		producerInstance.SendLog(LOGProject, LOGLogstore, LOGTopic, LOGSource, log)
-		producerInstance.SafeClose()
-
+		// fmt.Println("发送成功")
+		// producerInstance.SafeClose()
 	}
 
 }

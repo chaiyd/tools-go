@@ -5,10 +5,15 @@
 
 
 ## config.ini
-```
-[oss]
+```ini
+[server]
 AccessKeyId=""
 AccessKeySecret=""
+LOGEndpoint="cn-beijing.log.aliyuncs.com"
+LOGProject="tx-ai-cloud"
+LOGLogstore="txlog"
+LOGTopic="test"
+
 OSSEndpoint="https://oss-cn-beijing.aliyuncs.com"
 OSSBucket="backup"
 OSSDir="gitlab"
@@ -18,11 +23,14 @@ StartTime="2020-01-01"
 MonthsAgo=-3
 
 [client]
+# 上传阿里云sls
+LOGFile="/Users/test.log"
+LOGSource="127.0.0.1"
+
 # 删除日志，7天前的日志，请写"-7"
 LogsDaysAgo=-7
 BackupPath = "/data/backups/"
 LogPath = "/data/back-logs/"
-  
 ```
 
 ## 使用
@@ -31,11 +39,14 @@ LogPath = "/data/back-logs/"
 package main
 
 import (
-    alioss "github.com/chaiyd/aliyun-tools/alioss"
+    "github.com/chaiyd/aliyun-tools/alilog"
+    "github.com/chaiyd/aliyun-tools/alioss"
 )
-  
+
 func main() {
     alioss.UploadFile()
     alioss.OssDelFile()
+    alilog.AliSendLog()
 }
+
 ```

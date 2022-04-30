@@ -31,7 +31,7 @@ LogPath = "/data/back-logs/"
 package main
 
 import (
-    alioss "github.com/chaiyd/alioss/src"
+    alioss "github.com/chaiyd/aliyun-tools/alioss"
 )
   
 func main() {

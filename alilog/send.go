@@ -3,6 +3,7 @@ package alilog
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"os/signal"
 	"time"
@@ -11,7 +12,7 @@ import (
 	"github.com/chaiyd/aliyun-tools/api"
 )
 
-func sendLog() {
+func AliSendLog() {
 
 	cfg := api.LoadConfig()
 
@@ -29,25 +30,32 @@ func sendLog() {
 	LOGProject := fmt.Sprint(cfg.Section("server").Key("LOGProject"))
 	LOGLogstore := fmt.Sprint(cfg.Section("server").Key("LOGLogstore"))
 	LOGTopic := fmt.Sprint(cfg.Section("server").Key("LOGTopic"))
-	LOGFile := fmt.Sprint(cfg.Section("server").Key("LOGFileName"))
+	LOGFile := fmt.Sprint(cfg.Section("client").Key("LOGFile"))
+	LOGSource := fmt.Sprint(cfg.Section("client").Key("LOGSource"))
 
+	// fmt.Println("LOGFile:", LOGFile)
 	f, err := os.Open(LOGFile)
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	defer f.Close()
 	reader := bufio.NewReader(f)
 	for {
-		line, err := reader.ReadString('\n')
-		if err != nil {
-			fmt.Println(err)
-		}
-		if line == "" {
+		// line, err := reader.ReadString('\n')
+		line, _, err := reader.ReadLine()
+		// fmt.Printf("这一行的内容是：%s\n", line)
+		if err == io.EOF {
 			time.Sleep(time.Second * 1)
 			continue
 		}
-		log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"content": "test", "content2": fmt.Sprintf("%v", line)})
-		producerInstance.SendLog(LOGProject, LOGLogstore, LOGTopic, "", log)
+		if err != nil && err != io.EOF {
+			fmt.Println("读取错误", err)
+			break
+		}
+
+		log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"content": "test", "content2": fmt.Sprintf("%s\n", line)})
+		producerInstance.SendLog(LOGProject, LOGLogstore, LOGTopic, LOGSource, log)
 		producerInstance.SafeClose()
 
 	}

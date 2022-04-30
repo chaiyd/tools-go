@@ -10,8 +10,8 @@
 AccessKeyId=""
 AccessKeySecret=""
 LOGEndpoint="cn-beijing.log.aliyuncs.com"
-LOGProject="tx-ai-cloud"
-LOGLogstore="txlog"
+LOGProject="log"
+LOGLogstore="log"
 LOGTopic="test"
 
 OSSEndpoint="https://oss-cn-beijing.aliyuncs.com"

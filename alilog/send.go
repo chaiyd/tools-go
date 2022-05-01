@@ -56,7 +56,6 @@ func AliSendLog() {
 			fmt.Println("读取错误", err)
 			os.Exit(-1)
 		}
-		// log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"content": fmt.Sprintf("%s\n", line)})
 		log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"content": fmt.Sprintf("%s\n", line)})
 		producerInstance.SendLog(LOGProject, LOGLogstore, LOGTopic, LOGSource, log)
 		// fmt.Println("发送成功")

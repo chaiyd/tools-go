@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/chaiyd/alioss/alioss"
+	"github.com/chaiyd/aliyun-tools/alioss"
 	"github.com/chaiyd/aliyun-tools/alilog"
 )
 

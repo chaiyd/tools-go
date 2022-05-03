@@ -34,19 +34,39 @@ func AliSendLog() {
 	LOGFile := fmt.Sprint(cfg.Section("client").Key("LOGFile"))
 	LOGSource := fmt.Sprint(cfg.Section("client").Key("LOGSource"))
 
-	// fmt.Println("LOGFile:", LOGFile)
 	f, err := os.Open(LOGFile)
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Println("LOGFile:", LOGFile)
 
 	defer f.Close()
 
 	reader := bufio.NewReader(f)
-	c := make(chan os.Signal)
+
+	go func() {
+		for {
+			line, _, err := reader.ReadLine()
+			// fmt.Printf("这一行是：", fmt.Sprintf("%s%v\n", line)
+			if err == io.EOF {
+				// fmt.Printf("数据读取完毕\n")
+				time.Sleep(time.Second * 1)
+				continue
+			}
+			if err != nil && err != io.EOF {
+				fmt.Println("读取错误", err)
+				os.Exit(-1)
+			}
+			log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"content": fmt.Sprintf("%s\n", line)})
+			// fmt.Printf("开始发送日志%s\n", log)
+			producerInstance.SendLog(LOGProject, LOGLogstore, LOGTopic, LOGSource, log)
+			// fmt.Printf("发送完毕\n")
+		}
+	}()
+
+	c := make(chan os.Signal, 1)
 	//监听指定信号 ctrl+c kill
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGUSR1, syscall.SIGUSR2)
-
 	for {
 		s := <-c
 		switch s {
@@ -57,21 +77,5 @@ func AliSendLog() {
 		default:
 			return
 		}
-
-		line, _, err := reader.ReadLine()
-		// fmt.Printf("这一行是：", fmt.Sprintf("%s%v\n", line)
-		if err == io.EOF {
-			// fmt.Printf("数据读取完毕")
-			time.Sleep(time.Second * 1)
-			continue
-		}
-		if err != nil && err != io.EOF {
-			fmt.Println("读取错误", err)
-			os.Exit(-1)
-		}
-		log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"content": fmt.Sprintf("%s\n", line)})
-		producerInstance.SendLog(LOGProject, LOGLogstore, LOGTopic, LOGSource, log)
-
 	}
-	// fmt.Println("发送成功")
 }

@@ -9,5 +9,4 @@ func main() {
 	alioss.UploadFile()
 	alioss.OssDelFile()
 	alilog.AliSendLog()
-
 }

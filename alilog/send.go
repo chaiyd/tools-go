@@ -36,7 +36,8 @@ func AliSendLog() {
 
 	f, err := os.Open(LOGFile)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("打开文件出错:", err)
+		os.Exit(-1)
 	}
 	fmt.Println("LOGFile:", LOGFile)
 

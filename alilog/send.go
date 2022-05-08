@@ -11,9 +11,18 @@ import (
 
 	"github.com/aliyun/aliyun-log-go-sdk/producer"
 	"github.com/chaiyd/aliyun-tools/api"
+	"github.com/chaiyd/aliyun-tools/get"
 )
 
 func AliSendLog() {
+	ip, err := get.GetOutBoundIP()
+	if err != nil {
+		fmt.Println("获取ip出错", err)
+	}
+	hostname, err := os.Hostname()
+	if err != nil {
+		fmt.Println("获取hostname出错", err)
+	}
 
 	cfg := api.LoadConfig()
 
@@ -32,7 +41,8 @@ func AliSendLog() {
 	LOGLogstore := fmt.Sprint(cfg.Section("server").Key("LOGLogstore"))
 	LOGTopic := fmt.Sprint(cfg.Section("server").Key("LOGTopic"))
 	LOGFile := fmt.Sprint(cfg.Section("client").Key("LOGFile"))
-	LOGSource := fmt.Sprint(cfg.Section("client").Key("LOGSource"))
+	// LOGSource := fmt.Sprint(cfg.Section("client").Key("LOGSource"))
+	LOGSource := ip
 
 	f, err := os.Open(LOGFile)
 	if err != nil {
@@ -58,7 +68,7 @@ func AliSendLog() {
 				fmt.Println("读取错误", err)
 				os.Exit(-1)
 			}
-			log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"content": fmt.Sprintf("%s\n", line)})
+			log := producer.GenerateLog(uint32(time.Now().Unix()), map[string]string{"Topic": LOGTopic, "ip": ip, "hostname": hostname, "msg": fmt.Sprintf("%s\n", line)})
 			// fmt.Printf("开始发送日志%s\n", log)
 			producerInstance.SendLog(LOGProject, LOGLogstore, LOGTopic, LOGSource, log)
 			// fmt.Printf("发送完毕\n")

@@ -34,7 +34,6 @@ OSSMonthsAgo=-3
 [client]
 # 上传阿里云sls
 LOGFile="/Users/videopls/Projects/aliyun-tools/alilog/log"
-LOGSource="127.0.0.1"
 
 # 删除本地日志，7天前的日志，请写"-7"
 LogsDaysAgo=-7

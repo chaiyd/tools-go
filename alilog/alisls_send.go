@@ -11,11 +11,10 @@ import (
 
 	"github.com/aliyun/aliyun-log-go-sdk/producer"
 	"github.com/chaiyd/aliyun-tools/api"
-	"github.com/chaiyd/aliyun-tools/get"
 )
 
 func AliSendLog() {
-	ip, err := get.GetOutBoundIP()
+	ip, err := api.GetOutBoundIP()
 	if err != nil {
 		fmt.Println("获取ip出错", err)
 	}

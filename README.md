@@ -1,6 +1,7 @@
 # tools-go
 
 - golang 写的小工具
+- <https://github.com/chaiyd/tools-go.git>
 
 ## aliyun
 
@@ -34,7 +35,7 @@ OSSMonthsAgo=-3
 
 [client]
 # 上传阿里云sls
-LOGFile="/Users/videopls/Projects/aliyun-tools/alilog/log"
+LOGFile="/Users/videopls/Projects/tools-go/log"
 
 # 删除本地日志，7天前的日志，请写"-7"
 LogsDaysAgo=-7
@@ -48,14 +49,13 @@ LogPath = "/data/back-logs/"
 package main
 
 import (
-    "github.com/chaiyd/aliyun-tools/alilog"
-    "github.com/chaiyd/aliyun-tools/alioss"
+  "github.com/chaiyd/tools-go/aliyun"
 )
 
 func main() {
-    alioss.UploadFile()
-    alioss.OssDelFile()
-    alilog.AliSendLog()
+  aliyun.UploadFile()
+  aliyun.OssDelFile()
+  aliyun.AliSendLog()
 }
 
 ```

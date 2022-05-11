@@ -1,4 +1,4 @@
-package alioss
+package aliyun
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/chaiyd/aliyun-tools/api"
+	"github.com/chaiyd/tools-go/api"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )

@@ -1,4 +1,4 @@
-package alilog
+package aliyun
 
 import (
 	"bufio"
@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/aliyun/aliyun-log-go-sdk/producer"
-	"github.com/chaiyd/aliyun-tools/api"
+	"github.com/chaiyd/tools-go/api"
 )
 
 func AliSendLog() {

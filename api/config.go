@@ -2,11 +2,12 @@ package api
 
 import (
 	"fmt"
-	"gopkg.in/ini.v1"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"gopkg.in/ini.v1"
 )
 
 func LoadConfig() *ini.File {

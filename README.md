@@ -1,17 +1,18 @@
-# alioss
+# tools-go
 
 - golang 写的小工具
 
-## alioss
+## aliyun
+
 - aliossdel
   - 用来删除alioss指定时间内的文件
 - aliossupload
   - 上传指定目录文件到alioss
-## alilog
+- alisls
   - 上传指定日志文件到alisls
   
----
 ## config.ini
+
 ```ini
 [server]
 AccessKeyId=""

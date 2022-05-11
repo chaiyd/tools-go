@@ -1,4 +1,4 @@
-module github.com/chaiyd/aliyun-tools
+module github.com/chaiyd/tools-go
 
 go 1.17
 

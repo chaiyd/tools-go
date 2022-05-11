@@ -1,12 +1,11 @@
 package main
 
 import (
-	"github.com/chaiyd/aliyun-tools/alilog"
-	"github.com/chaiyd/aliyun-tools/alioss"
+	"github.com/chaiyd/tools-go/aliyun"
 )
 
 func main() {
-	alioss.UploadFile()
-	alioss.OssDelFile()
-	alilog.AliSendLog()
+	aliyun.UploadFile()
+	aliyun.OssDelFile()
+	aliyun.AliSendLog()
 }

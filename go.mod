@@ -3,7 +3,7 @@ module github.com/chaiyd/tools-go
 go 1.17
 
 require (
-	github.com/aliyun/aliyun-oss-go-sdk v2.2.2+incompatible
+	github.com/aliyun/aliyun-oss-go-sdk v2.2.3+incompatible
 	github.com/tidwall/gjson v1.14.1
 	github.com/xuri/excelize/v2 v2.6.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
@@ -20,8 +20,6 @@ require (
 	github.com/pierrec/lz4 v2.6.1+incompatible // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
-	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
-	golang.org/x/tools v0.1.10 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 )
@@ -29,9 +27,6 @@ require (
 require (
 	github.com/aliyun/aliyun-log-go-sdk v0.1.33
 	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
-	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/kr/pretty v0.2.1 // indirect
-	github.com/kr/text v0.1.0 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.2 // indirect

@@ -25,7 +25,7 @@ require (
 )
 
 require (
-	github.com/aliyun/aliyun-log-go-sdk v0.1.33
+	github.com/aliyun/aliyun-log-go-sdk v0.1.35
 	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect

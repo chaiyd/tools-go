@@ -10,6 +10,7 @@ import (
 	"gopkg.in/ini.v1"
 )
 
+// LoadConfig 获取配置文件
 func LoadConfig() *ini.File {
 	// 读取配置文件
 	file, _ := exec.LookPath(os.Args[0])

@@ -2,11 +2,35 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 )
 
+// 一些常用方法
+
+// 关闭程序
+func SystemExit() {
+	c := make(chan os.Signal, 1)
+	//监听信号 ctrl+c kill
+	signal.Notify(c, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+	for {
+		s := <-c
+		switch s {
+		case syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT:
+			log.Println("退出程序：", s)
+			os.Exit(0)
+		default:
+			return
+		}
+	}
+
+}
+
+// 获取本机内网ip
 func GetIP() (ip string, err error) {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
@@ -26,6 +50,7 @@ func GetIP() (ip string, err error) {
 	return
 }
 
+// 获取公网ip
 func GetOutBoundIP() (ip string, err error) {
 	conn, err := net.Dial("udp", "8.8.8.8:53")
 	if err != nil {
@@ -38,6 +63,7 @@ func GetOutBoundIP() (ip string, err error) {
 	return
 }
 
+// 获取本机hostname
 func GetHOSTNAME() (hostname string, err error) {
 	hostname, err = os.Hostname()
 	if err != nil {

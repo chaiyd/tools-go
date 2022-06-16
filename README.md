@@ -11,7 +11,24 @@
   - 上传指定目录文件到alioss
 - alisls
   - 上传指定日志文件到alisls
-  
+
+## 使用
+
+```golang
+package main
+
+import (
+  "github.com/chaiyd/tools-go/aliyun"
+)
+
+func main() {
+  aliyun.UploadFile()
+  aliyun.OssDelFile()
+  aliyun.AliSendLog()
+}
+
+```
+
 ## config.ini
 
 ```ini
@@ -43,19 +60,19 @@ BackupPath = "/data/backups/"
 LogPath = "/data/back-logs/"
 ```
 
-## 使用
+## cadvisor
 
-```golang
-package main
-
-import (
-  "github.com/chaiyd/tools-go/aliyun"
-)
-
-func main() {
-  aliyun.UploadFile()
-  aliyun.OssDelFile()
-  aliyun.AliSendLog()
-}
-
+```shell
+docker run --restart=always \
+          --volume=/:/rootfs:ro \
+          --volume=/var/run:/var/run:ro \
+          --volume=/sys:/sys:ro \
+          --volume=/docker/docker:/var/lib/docker:ro \
+          --volume=/dev/disk/:/dev/disk:ro \  
+          --publish=8080:8080 \  
+          --detach=true  \ 
+          --name=cadvisor \ 
+          --privileged  \
+          --device=/dev/kmsg \  
+          gcr.io/cadvisor/cadvisor:v0.39.3
 ```

@@ -36,14 +36,16 @@ type Data struct {
 }
 
 type Error struct {
-	Error      string
-	Msg        string
 	DockerName string
 	DockerId   string
+	Error      string
+	Msg        string
+	Timestamp  int64
 }
 
 func Write(data []byte) error {
 	path := "/data/network/" + env + "/"
+	// path := "./"
 	time := time.Now().Format("2006-01-02")
 	f, err := os.OpenFile(path+ip+"-"+time+".log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0644)
 	if err != nil {
@@ -89,11 +91,14 @@ func Receive() {
 		if !value.Exists() {
 			containerName := strings.Trim(container.Names[0], "/")
 			dataerr := Error{
-				Error:      "err",
-				Msg:        "网卡不存在",
 				DockerName: containerName,
 				DockerId:   container.ID,
+				Error:      "err",
+				Msg:        "网卡不存在",
+				// Timestamp:  time.Now().UnixMilli(),
+				Timestamp: time.Now().UnixNano() / 1e6,
 			}
+			// fmt.Println("时间戳：", time.Now().UnixNano()/1e6)
 			datajson, _ := json.Marshal(dataerr)
 
 			datajsonStr := string(datajson)
@@ -103,41 +108,42 @@ func Receive() {
 			}
 			// fmt.Println("关闭资源,网卡不存在11111", response.Body.Close())
 			continue
-		} else {
-			r_source := regexp.MustCompile("container_network_receive_bytes_total"+
-				"(.*)"+container.ID+"(.*)"+
-				"eth0"+"(.*)").FindAllStringSubmatch(string(body), -1)
-			// fmt.Println(r_source)
+		}
+		r_source := regexp.MustCompile("container_network_receive_bytes_total"+"(.*)"+container.ID+"(.*)"+
+			"eth0"+"(.*)").FindAllStringSubmatch(string(body), -1)
 
-			r_source_string := strings.Split(r_source[0][0], " ")
-			r_source_time := r_source_string[len(r_source_string)-1]
-			r_source_num_str := r_source_string[len(r_source_string)-2]
-			r_source_num, _ := decimal.NewFromString(r_source_num_str)
-			containerName := strings.Trim(container.Names[0], "/")
-			containerIP := container.NetworkSettings.Networks[network].IPAddress
-
-			data := Data{
-				DockerName:    containerName,
-				DockerId:      container.ID,
-				DockerNetwork: network,
-				DockerIP:      containerIP,
-				Type:          "1",
-				Bytes:         r_source_num,
-				Timestamp:     r_source_time,
-			}
-			datajson, err := json.Marshal(data)
-			if err != nil {
-				log.Println(err)
-			}
-
-			datajsonStr := string(datajson)
-			err = Write([]byte(datajsonStr + "\n"))
-			if err != nil {
-				log.Println(err)
-			}
-			// fmt.Println("关闭资源333333", response.Body.Close())
+		if r_source == nil {
 			continue
 		}
+		r_source_string := strings.Split(r_source[0][0], " ")
+		r_source_time := r_source_string[len(r_source_string)-1]
+		r_source_num_str := r_source_string[len(r_source_string)-2]
+		r_source_num, _ := decimal.NewFromString(r_source_num_str)
+		containerName := strings.Trim(container.Names[0], "/")
+		containerIP := container.NetworkSettings.Networks[network].IPAddress
+
+		data := Data{
+			DockerName:    containerName,
+			DockerId:      container.ID,
+			DockerNetwork: network,
+			DockerIP:      containerIP,
+			Type:          "1",
+			Bytes:         r_source_num,
+			Timestamp:     r_source_time,
+		}
+		datajson, err := json.Marshal(data)
+		if err != nil {
+			log.Println(err)
+		}
+
+		datajsonStr := string(datajson)
+		err = Write([]byte(datajsonStr + "\n"))
+		if err != nil {
+			log.Println(err)
+		}
+		// fmt.Println("关闭资源333333", response.Body.Close())
+		continue
+
 	}
 }
 
@@ -165,10 +171,11 @@ func Transmit() {
 		if !value.Exists() {
 			containerName := strings.Trim(container.Names[0], "/")
 			dataerr := Error{
-				Error:      "err",
-				Msg:        "网卡不存在",
 				DockerName: containerName,
 				DockerId:   container.ID,
+				Error:      "err",
+				Msg:        "网卡不存在",
+				Timestamp:  time.Now().UnixNano() / 1e6,
 			}
 			datajson, _ := json.Marshal(dataerr)
 			datajsonStr := string(datajson)
@@ -178,38 +185,41 @@ func Transmit() {
 			}
 			// fmt.Println("关闭资源,网卡不存在22222221", response.Body.Close())
 			continue
-		} else {
-			t_source := regexp.MustCompile("container_network_transmit_bytes_total"+"(.*)"+container.ID+"(.*)"+
-				"eth0"+"(.*)").FindAllStringSubmatch(string(body), -1)
+		}
+		t_source := regexp.MustCompile("container_network_transmit_bytes_total"+"(.*)"+container.ID+"(.*)"+
+			"eth0"+"(.*)").FindAllStringSubmatch(string(body), -1)
 
-			t_source_string := strings.Split(t_source[0][0], " ")
-			t_source_time := t_source_string[len(t_source_string)-1]
-			t_source_num_str := t_source_string[len(t_source_string)-2]
-			t_source_num, _ := decimal.NewFromString(t_source_num_str)
-			containerName := strings.Trim(container.Names[0], "/")
-			containerIP := container.NetworkSettings.Networks[network].IPAddress
-
-			data := Data{
-				DockerName:    containerName,
-				DockerId:      container.ID,
-				DockerNetwork: network,
-				DockerIP:      containerIP,
-				Type:          "2",
-				Bytes:         t_source_num,
-				Timestamp:     t_source_time,
-			}
-			datajson, err := json.Marshal(data)
-			if err != nil {
-				log.Println(err)
-			}
-			datajsonStr := string(datajson)
-			err = Write([]byte(datajsonStr + "\n"))
-			if err != nil {
-				log.Println(err)
-			}
-			// fmt.Println("关闭资源44444", response.Body.Close())
+		if t_source == nil {
 			continue
 		}
+		t_source_string := strings.Split(t_source[0][0], " ")
+		t_source_time := t_source_string[len(t_source_string)-1]
+		t_source_num_str := t_source_string[len(t_source_string)-2]
+		t_source_num, _ := decimal.NewFromString(t_source_num_str)
+		containerName := strings.Trim(container.Names[0], "/")
+		containerIP := container.NetworkSettings.Networks[network].IPAddress
+
+		data := Data{
+			DockerName:    containerName,
+			DockerId:      container.ID,
+			DockerNetwork: network,
+			DockerIP:      containerIP,
+			Type:          "2",
+			Bytes:         t_source_num,
+			Timestamp:     t_source_time,
+		}
+		datajson, err := json.Marshal(data)
+		if err != nil {
+			log.Println(err)
+		}
+		datajsonStr := string(datajson)
+		err = Write([]byte(datajsonStr + "\n"))
+		if err != nil {
+			log.Println(err)
+		}
+		// fmt.Println("关闭资源44444", response.Body.Close())
+		continue
+
 	}
 }
 
@@ -220,6 +230,6 @@ func main() {
 			Transmit()
 			defer tools.SystemExit()
 		}()
-		time.Sleep(time.Second * 1)
+		time.Sleep(time.Second * 10)
 	}
 }

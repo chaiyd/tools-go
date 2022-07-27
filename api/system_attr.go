@@ -37,17 +37,18 @@ func GetIP() (ip string, err error) {
 		fmt.Println(err)
 		return
 	}
+
 	for _, address := range addrs {
 		// 检查ip地址判断是否回环地址
 		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
 			if ipnet.IP.To4() != nil {
 				ip = ipnet.IP.String()
-				return
+				return ip, err
 				// fmt.Println("test", ipnet.IP.String())
 			}
 		}
 	}
-	return
+	return ip, err
 }
 
 // 获取公网ip
@@ -57,6 +58,7 @@ func GetOutBoundIP() (ip string, err error) {
 		fmt.Println(err)
 		return
 	}
+	defer conn.Close()
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 	// fmt.Println(localAddr.String())
 	ip = strings.Split(localAddr.String(), ":")[0]

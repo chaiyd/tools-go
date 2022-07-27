@@ -106,7 +106,6 @@ func Receive() {
 			if err != nil {
 				log.Println(err)
 			}
-			// fmt.Println("关闭资源,网卡不存在11111", response.Body.Close())
 			continue
 		}
 		r_source := regexp.MustCompile("container_network_receive_bytes_total"+"(.*)"+container.ID+"(.*)"+
@@ -141,7 +140,6 @@ func Receive() {
 		if err != nil {
 			log.Println(err)
 		}
-		// fmt.Println("关闭资源333333", response.Body.Close())
 		continue
 
 	}
@@ -183,7 +181,6 @@ func Transmit() {
 			if err != nil {
 				log.Println(err)
 			}
-			// fmt.Println("关闭资源,网卡不存在22222221", response.Body.Close())
 			continue
 		}
 		t_source := regexp.MustCompile("container_network_transmit_bytes_total"+"(.*)"+container.ID+"(.*)"+

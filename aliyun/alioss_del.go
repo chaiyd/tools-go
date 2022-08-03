@@ -45,23 +45,32 @@ func OssDelFile() {
 
 	OSSStartTimeStr := fmt.Sprint(cfg.Section("server").Key("OSSStartTime"))
 	OSSMonthsAgoStr := fmt.Sprint(cfg.Section("server").Key("OSSMonthsAgo"))
+	OSSDaysAgoStr := fmt.Sprint(cfg.Section("server").Key("OSSDaysAgo"))
+
 	OSSMonthsAgoInt, err := strconv.Atoi(OSSMonthsAgoStr)
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(-1)
 	}
 
+	OSSDaysAgoInt, err := strconv.Atoi(OSSDaysAgoStr)
+	if err != nil {
+		fmt.Println("Error:", err)
+		os.Exit(-1)
+	}
 	// t1time, _ := time.ParseInLocation("2006-01-02 15:04:05", t1str, time.Local)
-	OSSMonthsAgo := time.Now().AddDate(0, OSSMonthsAgoInt, 0).Format("2006-01-02")
+	// OSSMonthsAgo := time.Now().AddDate(0, OSSMonthsAgoInt, OSSDaysAgoInt).Format("2006-01-02")
+	OSSDelAgo := time.Now().AddDate(0, OSSMonthsAgoInt, OSSDaysAgoInt).Format("2006-01-02")
+
 	OSSStartTimeTime, _ := time.ParseInLocation("2006-01-02", OSSStartTimeStr, time.Local)
-	OSSMonthsAgoTime, _ := time.ParseInLocation("2006-01-02", OSSMonthsAgo, time.Local)
+	OSSDelAgoTime, _ := time.ParseInLocation("2006-01-02", OSSDelAgo, time.Local)
 
 	for _, object := range lsRes.Objects {
 		//LastModifiedTime, _ := time.ParseInLocation("2006-01-02", object.LastModified.String(), time.Local)
 		// Before 在之前
 		if OSSStartTimeTime.Before(object.LastModified) {
-			if object.LastModified.Before(OSSMonthsAgoTime) {
-				fmt.Println("删除", OSSStartTimeTime, "到", OSSMonthsAgoTime, "之间的文件", object.Key)
+			if object.LastModified.Before(OSSDelAgoTime) {
+				fmt.Println("删除", OSSStartTimeTime, "到", OSSDelAgoTime, "之间的文件", object.Key)
 				// After 在之后
 				//if MonthsAgoTime.After(object.LastModified) {
 				err := bucket.DeleteObject(object.Key)

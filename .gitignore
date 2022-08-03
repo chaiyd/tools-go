@@ -1,1 +1,3 @@
-./conf/*
+./conf/config.ini
+.vscode
+.Ds_Store

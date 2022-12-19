@@ -20,7 +20,7 @@ require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/aliyun/aliyun-log-go-sdk v0.1.40
 	github.com/docker/distribution v2.8.1+incompatible // indirect
-	github.com/docker/docker v20.10.21+incompatible
+	github.com/docker/docker v20.10.22+incompatible
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect

@@ -13,24 +13,23 @@ require (
 require (
 	github.com/go-kit/kit v0.12.0 // indirect
 	github.com/pierrec/lz4 v2.6.1+incompatible // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
 )
 
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/aliyun/aliyun-log-go-sdk v0.1.68
-	github.com/docker/distribution v2.8.2+incompatible // indirect
-	github.com/docker/docker v24.0.7+incompatible
+	github.com/containerd/log v0.1.0 // indirect
+	github.com/distribution/reference v0.5.0 // indirect
+	github.com/docker/docker v25.0.1+incompatible
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.4.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/moby/term v0.0.0-20210619224110-3f7ff695adc6 // indirect
 	github.com/morikuni/aec v1.0.0 // indirect
-	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.0.2 // indirect
 	github.com/shopspring/decimal v1.3.1
-	golang.org/x/time v0.0.0-20220609170525-579cf78fd858 // indirect
+	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.47.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.22.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
-	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gotest.tools/v3 v3.2.0 // indirect
 )

@@ -13,7 +13,7 @@ require (
 require (
 	github.com/go-kit/kit v0.12.0 // indirect
 	github.com/pierrec/lz4 v2.6.1+incompatible // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
+	google.golang.org/protobuf v1.33.0 // indirect
 )
 
 require (
